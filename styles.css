@@ -33,3 +33,21 @@ p {
 .sort-options {
     margin-bottom: 20px;
 }
+
+/* Add to cart button styling */
+.add-to-cart {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.add-to-cart:disabled {
+    background-color: #ccc; /* Light gray background for disabled button */
+    cursor: not-allowed; /* Change cursor to not-allowed */
+}

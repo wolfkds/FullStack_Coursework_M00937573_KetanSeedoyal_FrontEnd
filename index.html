@@ -39,6 +39,7 @@
       :price="classInfo.price"
       :space="classInfo.space"
       :icon="classInfo.icon"
+      @add-to-cart="addToCart(index)" 
     />
   </div>
 
@@ -97,6 +98,12 @@
                 <p><strong>Location:</strong> {{ location }}</p>
                 <p><strong>Price:</strong> $ {{ price }}</p>
                 <p><strong>Available Spots:</strong> {{ space }}</p>
+                <button
+                    class="add-to-cart"
+                    :disabled="space === 0"  <!-- Disable button if no space -->
+                    @click="$emit('add-to-cart')"> <!-- Emit add-to-cart event -->
+                    Add to Cart
+                </button>
               </div>
             </div>
           `,
