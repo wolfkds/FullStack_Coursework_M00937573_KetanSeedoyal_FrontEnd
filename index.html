@@ -65,6 +65,34 @@
             ],
         };
       },
+      computed: {
+        // Computed property to return sorted classes based on the selected attribute and order
+        sortedClasses() {
+          // Clone the classes array to avoid mutating the original array
+          let sorted = [...this.classes];
+          
+          // Sort by the selected attribute
+          sorted.sort((a, b) => {
+            let comparison = 0;
+
+            // Compare by different data types (string or number)
+            if (typeof a[this.sortAttribute] === 'string') {
+              comparison = a[this.sortAttribute].localeCompare(b[this.sortAttribute]);
+            } else {
+              comparison = a[this.sortAttribute] - b[this.sortAttribute];
+            }
+
+            // If the order is descending, reverse the comparison result
+            if (this.sortOrder === 'desc') {
+              comparison = comparison * -1;
+            }
+
+            return comparison;
+          });
+
+          return sorted;
+        }
+      },
       // Registering the class card component
       components: {
         'class-card': {
