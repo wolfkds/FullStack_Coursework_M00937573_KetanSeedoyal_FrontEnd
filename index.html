@@ -110,8 +110,8 @@
                 <p><strong>Available Spots:</strong> {{ space }}</p>
                 <button
                     class="add-to-cart"
-                    :disabled="space === 0"  <!-- Disable button if no space -->
-                    @click="$emit('add-to-cart')"> <!-- Emit add-to-cart event -->
+                    :disabled="space === 0" 
+                    @click="$emit('add-to-cart')">
                     Add to Cart
                 </button>
               </div>
