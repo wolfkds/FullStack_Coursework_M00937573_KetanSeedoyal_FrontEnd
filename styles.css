@@ -28,3 +28,8 @@ p {
   display: flex;
   flex-wrap: wrap;
 }
+
+/* Sort select box styling */
+.sort-options {
+    margin-bottom: 20px;
+}
