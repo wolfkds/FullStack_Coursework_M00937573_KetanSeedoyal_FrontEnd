@@ -32,7 +32,7 @@
 
     <!-- Loop over each class to generate a card -->
     <class-card
-      v-for="(classInfo, index) in classes"
+      v-for="(classInfo, index) in sortedClasses"
       :key="index"
       :subject="classInfo.subject"
       :location="classInfo.location"
@@ -68,11 +68,8 @@
       computed: {
         // Computed property to return sorted classes based on the selected attribute and order
         sortedClasses() {
-          // Clone the classes array to avoid mutating the original array
-          let sorted = [...this.classes];
-          
-          // Sort by the selected attribute
-          sorted.sort((a, b) => {
+          // Create a copy of the classes array to avoid mutating the original array
+          return this.classes.slice().sort((a, b) => {
             let comparison = 0;
 
             // Compare by different data types (string or number)
@@ -83,14 +80,8 @@
             }
 
             // If the order is descending, reverse the comparison result
-            if (this.sortOrder === 'desc') {
-              comparison = comparison * -1;
-            }
-
-            return comparison;
+            return this.sortOrder === 'desc' ? comparison * -1 : comparison;
           });
-
-          return sorted;
         }
       },
       // Registering the class card component
