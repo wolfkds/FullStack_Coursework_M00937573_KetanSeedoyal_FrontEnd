@@ -4,17 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>After School Classes</title>
-
   <!-- Import Vue.js -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
-  
-  <!-- Import Font Awesome for icons -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  
-  <!-- <style>
-    /* CSS for styling the class cards */
-    
-  </style> -->
+  <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+  <!-- Load Font Awesome from a stable CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -27,6 +21,7 @@
       :location="classInfo.location"
       :price="classInfo.price"
       :space="classInfo.space"
+      :icon="classInfo.icon"
     />
   </div>
 
@@ -36,29 +31,29 @@
       el: '#app',
       data() {
         return {
-          // Array of lessons with 10 entries, each having 5 available spaces
+          // Array of lessons with 10 entries, each having 5 available spaces and a Font Awesome icon
           classes: [
-            { subject: "Mathematics", location: "Room 101", price: 50, space: 5 },
-            { subject: "Science", location: "Lab 3", price: 40, space: 5 },
-            { subject: "Art", location: "Room 204", price: 30, space: 5 },
-            { subject: "History", location: "Room 301", price: 35, space: 5 },
-            { subject: "Music", location: "Music Hall", price: 45, space: 5 },
-            { subject: "Computer Science", location: "Lab 1", price: 55, space: 5 },
-            { subject: "English", location: "Room 102", price: 25, space: 5 },
-            { subject: "Physical Education", location: "Gym", price: 20, space: 5 },
-            { subject: "Chemistry", location: "Lab 5", price: 60, space: 5 },
-            { subject: "Biology", location: "Lab 2", price: 50, space: 5 }
+            { subject: "Mathematics", location: "Room 101", price: 50, space: 5, icon: 'fa fa-calculator' },
+            { subject: "Science", location: "Lab 3", price: 40, space: 5, icon: 'fa fa-flask' },
+            { subject: "Art", location: "Room 204", price: 30, space: 5, icon: 'fa fa-paint-brush' },
+            { subject: "History", location: "Room 301", price: 35, space: 5, icon: 'fa fa-landmark' },
+            { subject: "Music", location: "Music Hall", price: 45, space: 5, icon: 'fa fa-music' },
+            { subject: "Computer Science", location: "Lab 1", price: 55, space: 5, icon: 'fa fa-laptop-code' },
+            { subject: "English", location: "Room 102", price: 25, space: 5, icon: 'fa fa-book' },
+            { subject: "Physical Education", location: "Gym", price: 20, space: 5, icon: 'fa fa-basketball-ball' },
+            { subject: "Chemistry", location: "Lab 5", price: 60, space: 5, icon: 'fa fa-atom' },
+            { subject: "Biology", location: "Lab 2", price: 50, space: 5, icon: 'fa fa-leaf' }
           ],
         };
       },
       // Registering the class card component
       components: {
         'class-card': {
-          props: ['subject', 'location', 'price', 'space'],
+          props: ['subject', 'location', 'price', 'space', 'icon'],
           template: `
             <div class="card">
               <!-- Font Awesome icon for the lesson -->
-              <i class="fas fa-book icon"></i>
+              <i :class="icon" class="icon"></i>
               <div>
                 <h3>{{ subject }}</h3>
                 <p><strong>Location:</strong> {{ location }}</p>
