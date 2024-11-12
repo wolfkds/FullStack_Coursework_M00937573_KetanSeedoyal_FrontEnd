@@ -85,6 +85,16 @@
           });
         }
       },
+
+      methods: {
+        // Method to handle adding to cart
+        addToCart(index) {
+          if (this.classes[index].space > 0) {
+            this.classes[index].space--; // Decrement space
+            console.log(`Added ${this.classes[index].subject} to cart. Remaining spaces: ${this.classes[index].space}`);
+          }
+        }
+      },
       // Registering the class card component
       components: {
         'class-card': {
