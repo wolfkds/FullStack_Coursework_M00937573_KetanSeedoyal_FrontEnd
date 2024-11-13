@@ -4,218 +4,213 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>After School Classes</title>
-  <!-- Import Vue.js -->
   <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
-  <!-- Load Font Awesome from a stable CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+
 <body>
-
   <div id="app">
-    <!-- Cart Button -->
-    <button 
-      class="cart-button" 
-      :disabled="cart.length === 0" 
-      @click="toggleCart">
-      {{ showCart ? 'Back to Lessons' : 'View Cart' }}
-    </button>
-    <div v-if="!showCart">
-        <!-- Sort Options -->
-        <div class="sort-options">
-            <label for="sortAttribute">Sort by:</label>
-            <select v-model="sortAttribute" id="sortAttribute">
-                <option value="subject">Subject</option>
-                <option value="location">Location</option>
-                <option value="price">Price</option>
-                <option value="space">Spaces</option>
-            </select>
-      
-            <label for="sortOrder">Order:</label>
-            <select v-model="sortOrder" id="sortOrder">
-                <option value="asc">Ascending</option>
-                <option value="desc">Descending</option>
-            </select>
-        </div>
-  
-        <!-- Loop over each class to generate a card -->
-        <class-card
-          v-for="(classInfo, index) in sortedClasses"
-          :key="index"
-          :subject="classInfo.subject"
-          :location="classInfo.location"
-          :price="classInfo.price"
-          :space="classInfo.space"
-          :icon="classInfo.icon"
-          @add-to-cart="addToCart(index)"
-        />
+    <!-- Navigation Bar -->
+    <div class="navbar">
+      <a href="#">Home</a>
+      <a href="#">Classes</a>
+
+      <!-- Search Bar -->
+      <input
+        type="text"
+        v-model="searchQuery"
+        @input="searchLessons"
+        placeholder="Search for classes"
+        class="search-bar"
+      />
+
+      <button 
+        class="cart-button" 
+        :disabled="cart.length === 0" 
+        @click="toggleCart">
+        {{ showCart ? 'Back to Lessons' : 'View Cart' }}
+      </button>
+    </div>
+
+    <div v-if="!showCart" class="lessons-container">
+      <!-- Sort Options -->
+      <div class="sort-options">
+        <label for="sortAttribute">Sort by:</label>
+        <select v-model="sortAttribute" id="sortAttribute">
+          <option value="subject">Subject</option>
+          <option value="location">Location</option>
+          <option value="price">Price</option>
+          <option value="space">Spaces</option>
+        </select>
+          
+        <label for="sortOrder">Order:</label>
+        <select v-model="sortOrder" id="sortOrder">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
       </div>
-  
-      <div v-else class="cart-page">
-        <h2>Your Shopping Cart</h2>
-        <div v-if="cart.length === 0">Your cart is empty.</div>
-        <div v-else>
-          <div 
-            v-for="(cartItem, index) in cart" 
-            :key="index" 
-            class="card">
-            <i :class="cartItem.icon" class="icon"></i>
-            <div>
-                <h3>{{ cartItem.subject }}</h3>
-                <p><strong>Location:</strong> {{ cartItem.location }}</p>
-                <p><strong>Price:</strong> ${{ cartItem.price }}</p>
-                <p><strong>Available Spots:</strong> {{ cartItem.space }}</p>
-                <button class="add-to-cart" @click="removeFromCart(index)">Remove from Cart</button>
-            </div>
-          </div>
 
-          <!-- Checkout Form -->
-          <div class="checkout-form">
-            <input 
-              type="text" 
-              v-model="name" 
-              class="checkout-input" 
-              placeholder="Your Name" 
-              @input="validateCheckout">
-            <input 
-              type="text" 
-              v-model="phone" 
-              class="checkout-input" 
-              placeholder="Your Phone Number" 
-              @input="validateCheckout">
-            <button 
-              class="checkout-button" 
-              :disabled="!isCheckoutValid" 
-              @click="checkout">
-              Checkout
-            </button>
-          </div>
-
-          <!-- Checkout confirmation message -->
-          <div v-if="checkoutMessage" style="margin-top: 10px;">
-            {{ checkoutMessage }}
-          </div>
+      <!-- Loop over each class to generate a card -->
+      <div
+        v-for="(classInfo, index) in (searchResults.length ? searchResults : sortedClasses)"
+        :key="index"
+        class="card"
+      >
+        <i :class="classInfo.icon" class="icon"></i>
+        <div>
+          <h3>{{ classInfo.subject }}</h3>
+          <p><strong>Location:</strong> {{ classInfo.location }}</p>
+          <p><strong>Price:</strong> ${{ classInfo.price }}</p>
+          <p><strong>Available Spots:</strong> {{ classInfo.space }}</p>
+          <button
+            class="add-to-cart"
+            :disabled="classInfo.space === 0"
+            @click="addToCart(index)">
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
+
+    <div v-else class="cart-page">
+      <h2>Your Shopping Cart</h2>
+      <div v-if="cart.length === 0">Your cart is empty.</div>
+      <div v-else>
+        <div 
+          v-for="(cartItem, index) in cart" 
+          :key="index" 
+          class="card">
+          <i :class="cartItem.icon" class="icon"></i>
+          <div>
+            <h3>{{ cartItem.subject }}</h3>
+            <p><strong>Location:</strong> {{ cartItem.location }}</p>
+            <p><strong>Price:</strong> ${{ cartItem.price }}</p>
+            <p><strong>Available Spots:</strong> {{ cartItem.space }}</p>
+            <button class="add-to-cart" @click="removeFromCart(index)">Remove from Cart</button>
+          </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <div class="checkout-form">
+          <input 
+            type="text" 
+            v-model="name" 
+            class="checkout-input" 
+            placeholder="Your Name" 
+            @input="validateCheckout">
+          <input 
+            type="text" 
+            v-model="phone" 
+            class="checkout-input" 
+            placeholder="Your Phone Number" 
+            @input="validateCheckout">
+          <button 
+            class="checkout-button" 
+            :disabled="!isCheckoutValid" 
+            @click="checkout">
+            Checkout
+          </button>
+        </div>
+
+        <!-- Checkout confirmation message -->
+        <div v-if="checkoutMessage" style="margin-top: 10px;">
+          {{ checkoutMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Vue.js App Initialization
     new Vue({
       el: '#app',
       data() {
         return {
-            sortAttribute: 'subject', // default sorting attribute
-            sortOrder: 'asc', // default sorting order
-            showCart: false, // Flag to toggle between lesson view and cart view
-            cart: [], // Array to hold items added to the cart
-            name: '', // User's name for checkout
-            phone: '', // User's phone number for checkout
-            isCheckoutValid: false, // Flag to check if checkout form is valid
-            checkoutMessage: '', // Message displayed upon successful checkout
-            // Array of lessons with 10 entries, each having 5 available spaces and a Font Awesome icon
-            classes: [
-                { subject: "Mathematics", location: "Room 101", price: 50, space: 5, icon: 'fa fa-calculator' },
-                { subject: "Science", location: "Lab 3", price: 40, space: 5, icon: 'fa fa-flask' },
-                { subject: "Art", location: "Room 204", price: 30, space: 5, icon: 'fa fa-paint-brush' },
-                { subject: "History", location: "Room 301", price: 35, space: 5, icon: 'fa fa-landmark' },
-                { subject: "Music", location: "Music Hall", price: 45, space: 5, icon: 'fa fa-music' },
-                { subject: "Computer Science", location: "Lab 1", price: 55, space: 5, icon: 'fa fa-laptop-code' },
-                { subject: "English", location: "Room 102", price: 25, space: 5, icon: 'fa fa-book' },
-                { subject: "Physical Education", location: "Gym", price: 20, space: 5, icon: 'fa fa-basketball-ball' },
-                { subject: "Chemistry", location: "Lab 5", price: 60, space: 5, icon: 'fa fa-atom' },
-                { subject: "Biology", location: "Lab 2", price: 50, space: 5, icon: 'fa fa-leaf' }
-            ],
+          showCart: false,
+          classes: [
+            { subject: "Mathematics", location: "Room 101", price: 50, space: 5, icon: 'fa fa-calculator' },
+            { subject: "Science", location: "Lab 3", price: 40, space: 5, icon: 'fa fa-flask' },
+            { subject: "Art", location: "Room 204", price: 30, space: 5, icon: 'fa fa-paint-brush' },
+            { subject: "History", location: "Room 301", price: 35, space: 5, icon: 'fa fa-landmark' },
+            { subject: "Music", location: "Music Hall", price: 45, space: 5, icon: 'fa fa-music' },
+            { subject: "Computer Science", location: "Lab 1", price: 55, space: 5, icon: 'fa fa-laptop-code' },
+            { subject: "English", location: "Room 102", price: 25, space: 5, icon: 'fa fa-book' },
+            { subject: "Physical Education", location: "Gym", price: 20, space: 5, icon: 'fa fa-basketball-ball' },
+            { subject: "Chemistry", location: "Lab 5", price: 60, space: 5, icon: 'fa fa-atom' },
+            { subject: "Biology", location: "Lab 2", price: 50, space: 5, icon: 'fa fa-leaf' }
+          ],
+          cart: [],
+          sortAttribute: 'subject',
+          sortOrder: 'asc',
+          name: '',
+          phone: '',
+          isCheckoutValid: false,
+          checkoutMessage: '',
+          searchQuery: '',
+          searchResults: [],
         };
       },
-      computed: {
-        // Computed property to return sorted classes based on the selected attribute and order
-        sortedClasses() {
-          // Create a copy of the classes array to avoid mutating the original array
-          return this.classes.slice().sort((a, b) => {
-            let comparison = 0;
 
-            // Compare by different data types (string or number)
+      computed: {
+        sortedClasses() {
+          return this.classes.sort((a, b) => {
+            let comparison = 0;
             if (typeof a[this.sortAttribute] === 'string') {
               comparison = a[this.sortAttribute].localeCompare(b[this.sortAttribute]);
             } else {
               comparison = a[this.sortAttribute] - b[this.sortAttribute];
             }
-
-            // If the order is descending, reverse the comparison result
             return this.sortOrder === 'desc' ? comparison * -1 : comparison;
           });
         }
       },
 
       methods: {
-        // Method to handle adding to cart
+        searchLessons() {
+          const query = this.searchQuery.toLowerCase();
+          this.searchResults = this.classes.filter(classInfo => {
+            return (
+              classInfo.subject.toLowerCase().includes(query) ||
+              classInfo.location.toLowerCase().includes(query)
+            );
+          });
+        },
+
         addToCart(index) {
           if (this.classes[index].space > 0) {
-            this.classes[index].space--; // Decrement space
-            this.cart.push({ ...this.classes[index] }); // Add class to cart
-            console.log(`Added ${this.classes[index].subject} to cart. Remaining spaces: ${this.classes[index].space}`);
+            this.classes[index].space--;
+            this.cart.push({ ...this.classes[index] });
           }
         },
 
-        // Method to toggle between cart and lesson view
         toggleCart() {
-          this.showCart = !this.showCart; // Toggle the view
+          this.showCart = this.cart.length === 0 ? false : !this.showCart;
         },
 
-        // Method to remove item from the cart
         removeFromCart(index) {
           const removedItem = this.cart[index];
-          this.cart.splice(index, 1); // Remove item from cart
+          this.cart.splice(index, 1);
           const originalClass = this.classes.find(c => c.subject === removedItem.subject);
           if (originalClass) {
-            originalClass.space++; // Increment space back in the original classes list
+            originalClass.space++;
           }
         },
 
-        // Method to validate the checkout form
         validateCheckout() {
-          const namePattern = /^[A-Za-z\s]+$/;
-          const phonePattern = /^[0-9]+$/;
-          this.isCheckoutValid = namePattern.test(this.name) && phonePattern.test(this.phone);
+          this.isCheckoutValid = this.name.trim() !== '' && this.phone.trim() !== '';
         },
 
-        // Method to handle checkout
         checkout() {
           this.checkoutMessage = `Order submitted successfully for ${this.name}!`;
-          // Clear cart and checkout form after submission
           this.cart = [];
           this.name = '';
           this.phone = '';
           this.isCheckoutValid = false;
-        },
-      },
-
-      // Registering the class card component
-      components: {
-        'class-card': {
-          props: ['subject', 'location', 'price', 'space', 'icon'],
-          template: `
-            <div class="card">
-              <!-- Font Awesome icon for the lesson -->
-              <i :class="icon" class="icon"></i>
-              <div>
-                <h3>{{ subject }}</h3>
-                <p><strong>Location:</strong> {{ location }}</p>
-                <p><strong>Price:</strong> $ {{ price }}</p>
-                <p><strong>Available Spots:</strong> {{ space }}</p>
-                <button
-                    class="add-to-cart"
-                    :disabled="space === 0" 
-                    @click="$emit('add-to-cart')">
-                    Add to Cart
-                </button>
-              </div>
-            </div>
-          `,
-        },
-      },
+          this.showCart = false;  // Automatically switch back to lesson view
+        }
+      }
     });
   </script>
-
 </body>
 </html>
