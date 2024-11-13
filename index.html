@@ -68,6 +68,33 @@
                 <button class="add-to-cart" @click="removeFromCart(index)">Remove from Cart</button>
             </div>
           </div>
+
+          <!-- Checkout Form -->
+          <div class="checkout-form">
+            <input 
+              type="text" 
+              v-model="name" 
+              class="checkout-input" 
+              placeholder="Your Name" 
+              @input="validateCheckout">
+            <input 
+              type="text" 
+              v-model="phone" 
+              class="checkout-input" 
+              placeholder="Your Phone Number" 
+              @input="validateCheckout">
+            <button 
+              class="checkout-button" 
+              :disabled="!isCheckoutValid" 
+              @click="checkout">
+              Checkout
+            </button>
+          </div>
+
+          <!-- Checkout confirmation message -->
+          <div v-if="checkoutMessage" style="margin-top: 10px;">
+            {{ checkoutMessage }}
+          </div>
         </div>
       </div>
     </div>
@@ -81,6 +108,10 @@
             sortOrder: 'asc', // default sorting order
             showCart: false, // Flag to toggle between lesson view and cart view
             cart: [], // Array to hold items added to the cart
+            name: '', // User's name for checkout
+            phone: '', // User's phone number for checkout
+            isCheckoutValid: false, // Flag to check if checkout form is valid
+            checkoutMessage: '', // Message displayed upon successful checkout
             // Array of lessons with 10 entries, each having 5 available spaces and a Font Awesome icon
             classes: [
                 { subject: "Mathematics", location: "Room 101", price: 50, space: 5, icon: 'fa fa-calculator' },
@@ -125,6 +156,7 @@
             console.log(`Added ${this.classes[index].subject} to cart. Remaining spaces: ${this.classes[index].space}`);
           }
         },
+
         // Method to toggle between cart and lesson view
         toggleCart() {
           this.showCart = !this.showCart; // Toggle the view
@@ -138,8 +170,24 @@
           if (originalClass) {
             originalClass.space++; // Increment space back in the original classes list
           }
-        }
+        },
 
+        // Method to validate the checkout form
+        validateCheckout() {
+          const namePattern = /^[A-Za-z\s]+$/;
+          const phonePattern = /^[0-9]+$/;
+          this.isCheckoutValid = namePattern.test(this.name) && phonePattern.test(this.phone);
+        },
+
+        // Method to handle checkout
+        checkout() {
+          this.checkoutMessage = `Order submitted successfully for ${this.name}!`;
+          // Clear cart and checkout form after submission
+          this.cart = [];
+          this.name = '';
+          this.phone = '';
+          this.isCheckoutValid = false;
+        },
       },
 
       // Registering the class card component
