@@ -13,36 +13,64 @@
 <body>
 
   <div id="app">
-    <!-- Sort Options -->
-    <div class="sort-options">
-        <label for="sortAttribute">Sort by:</label>
-        <select v-model="sortAttribute" id="sortAttribute">
-          <option value="subject">Subject</option>
-          <option value="location">Location</option>
-          <option value="price">Price</option>
-          <option value="space">Spaces</option>
-        </select>
+    <!-- Cart Button -->
+    <button 
+      class="cart-button" 
+      :disabled="cart.length === 0" 
+      @click="toggleCart">
+      {{ showCart ? 'Back to Lessons' : 'View Cart' }}
+    </button>
+    <div v-if="!showCart">
+        <!-- Sort Options -->
+        <div class="sort-options">
+            <label for="sortAttribute">Sort by:</label>
+            <select v-model="sortAttribute" id="sortAttribute">
+                <option value="subject">Subject</option>
+                <option value="location">Location</option>
+                <option value="price">Price</option>
+                <option value="space">Spaces</option>
+            </select>
+      
+            <label for="sortOrder">Order:</label>
+            <select v-model="sortOrder" id="sortOrder">
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+            </select>
+        </div>
   
-        <label for="sortOrder">Order:</label>
-        <select v-model="sortOrder" id="sortOrder">
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
+        <!-- Loop over each class to generate a card -->
+        <class-card
+          v-for="(classInfo, index) in sortedClasses"
+          :key="index"
+          :subject="classInfo.subject"
+          :location="classInfo.location"
+          :price="classInfo.price"
+          :space="classInfo.space"
+          :icon="classInfo.icon"
+          @add-to-cart="addToCart(index)"
+        />
       </div>
-
-    <!-- Loop over each class to generate a card -->
-    <class-card
-      v-for="(classInfo, index) in sortedClasses"
-      :key="index"
-      :subject="classInfo.subject"
-      :location="classInfo.location"
-      :price="classInfo.price"
-      :space="classInfo.space"
-      :icon="classInfo.icon"
-      @add-to-cart="addToCart(index)" 
-    />
-  </div>
-
+  
+      <div v-else class="cart-page">
+        <h2>Your Shopping Cart</h2>
+        <div v-if="cart.length === 0">Your cart is empty.</div>
+        <div v-else>
+          <div 
+            v-for="(cartItem, index) in cart" 
+            :key="index" 
+            class="card">
+            <i :class="cartItem.icon" class="icon"></i>
+            <div>
+                <h3>{{ cartItem.subject }}</h3>
+                <p><strong>Location:</strong> {{ cartItem.location }}</p>
+                <p><strong>Price:</strong> ${{ cartItem.price }}</p>
+                <p><strong>Available Spots:</strong> {{ cartItem.space }}</p>
+                <button class="add-to-cart" @click="removeFromCart(index)">Remove from Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   <script>
     // Vue.js App Initialization
     new Vue({
@@ -51,6 +79,8 @@
         return {
             sortAttribute: 'subject', // default sorting attribute
             sortOrder: 'asc', // default sorting order
+            showCart: false, // Flag to toggle between lesson view and cart view
+            cart: [], // Array to hold items added to the cart
             // Array of lessons with 10 entries, each having 5 available spaces and a Font Awesome icon
             classes: [
                 { subject: "Mathematics", location: "Room 101", price: 50, space: 5, icon: 'fa fa-calculator' },
@@ -93,8 +123,24 @@
             this.classes[index].space--; // Decrement space
             console.log(`Added ${this.classes[index].subject} to cart. Remaining spaces: ${this.classes[index].space}`);
           }
+        },
+        // Method to toggle between cart and lesson view
+        toggleCart() {
+          this.showCart = !this.showCart; // Toggle the view
+        },
+
+        // Method to remove item from the cart
+        removeFromCart(index) {
+          const removedItem = this.cart[index];
+          this.cart.splice(index, 1); // Remove item from cart
+          const originalClass = this.classes.find(c => c.subject === removedItem.subject);
+          if (originalClass) {
+            originalClass.space++; // Increment space back in the original classes list
+          }
         }
+
       },
+
       // Registering the class card component
       components: {
         'class-card': {
