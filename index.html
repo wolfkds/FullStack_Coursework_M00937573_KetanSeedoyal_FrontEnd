@@ -121,6 +121,7 @@
         addToCart(index) {
           if (this.classes[index].space > 0) {
             this.classes[index].space--; // Decrement space
+            this.cart.push({ ...this.classes[index] }); // Add class to cart
             console.log(`Added ${this.classes[index].subject} to cart. Remaining spaces: ${this.classes[index].space}`);
           }
         },
