@@ -253,6 +253,37 @@
           this.showCart = !this.showCart;
       },
 
+      async searchLessons() {
+        if (!this.searchQuery.trim()) {
+          try {
+            // Fetch all lessons when the search query is cleared
+            const response = await fetch('http://localhost:3000/lessons');
+            const data = await response.json();
+
+            console.log('Fetched all lessons:', data);
+            this.lessons = data; // Reset to all lessons
+          } catch (error) {
+            console.error('Error fetching all lessons:', error);
+          }
+          return;
+        }
+
+        try {
+          const response = await fetch(`http://localhost:3000/search?q=${encodeURIComponent(this.searchQuery)}`);
+          const data = await response.json();
+
+          console.log('API Response:', data); // Log the API response
+
+          if (data.success) {
+            this.lessons = data.results;
+          } else {
+            console.error('Error fetching search results:', data.message);
+          }
+        } catch (error) {
+          console.error('Error performing search:', error);
+        }
+      }
+
       // Search functionality for filtering lessons
       // searchLessons() {
       //     this.searchResults = this.lessons.filter(lesson => {
