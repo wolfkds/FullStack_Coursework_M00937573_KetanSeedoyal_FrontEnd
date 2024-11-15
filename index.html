@@ -108,7 +108,7 @@
           <button 
             class="checkout-button" 
             :disabled="!isCheckoutValid" 
-            @click="checkout">
+            @click="submitOrder">
             Checkout
           </button>
         </div>
@@ -216,6 +216,7 @@
       el: '#app',
       data() {
         return {
+            // checkout: false,
             showCart: false, // Flag to toggle between lesson view and cart view
             lessons: [], // Array to hold all lessons fetched from the backend
             cart: [], // Array to hold items added to the cart
