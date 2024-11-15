@@ -216,7 +216,6 @@
       el: '#app',
       data() {
         return {
-            // checkout: false,
             showCart: false, // Flag to toggle between lesson view and cart view
             lessons: [], // Array to hold all lessons fetched from the backend
             cart: [], // Array to hold items added to the cart
@@ -287,6 +286,7 @@
                 const result = await response.json();
                 this.checkoutMessage = result.message;
                 this.cart = [];  // Clear the cart after successful order
+                this.showCart = false;
             } else {
                 this.checkoutMessage = 'Error submitting order';
             }
