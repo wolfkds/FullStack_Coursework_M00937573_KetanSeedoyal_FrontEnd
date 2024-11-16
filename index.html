@@ -54,7 +54,13 @@
         :key="index"
         class="card"
       >
-        <i :class="classInfo.icon" class="icon"></i>
+        <!-- <i :class="classInfo.icon" class="icon"></i> -->
+        <!-- Image of the class -->
+        <img 
+          :src="`http://localhost:3000${classInfo.imagePath}`" 
+          :alt="classInfo.subject" 
+          class="lesson-image"
+        />
         <div>
           <h3>{{ classInfo.subject }}</h3>
           <p><strong>Location:</strong> {{ classInfo.location }}</p>
