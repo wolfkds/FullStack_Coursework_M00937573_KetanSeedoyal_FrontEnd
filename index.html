@@ -15,7 +15,7 @@
   <body>
     <div id="app">
       <!-- Navigation Bar -->
-       
+
       <div class="navbar">
         <a href="">EDUCLASSCARDS</a>
         <!-- Search Bar -->
@@ -88,7 +88,11 @@
         <div v-if="cart.length === 0">Your cart is empty.</div>
         <div v-else>
           <div v-for="(cartItem, index) in cart" :key="index" class="card">
-            <i :class="cartItem.icon" class="icon"></i>
+            <img
+              :src="`http://localhost:3000${cartItem.imagePath}`"
+              :alt="cartItem.subject"
+              class="lesson-image"
+            />
             <div>
               <h3>{{ cartItem.subject }}</h3>
               <p><strong>Location:</strong> {{ cartItem.location }}</p>
