@@ -216,14 +216,17 @@
               if (response.ok) {
                 const result = await response.json();
                 this.checkoutMessage = result.message;
+                alert("Order submitted successfully!"); // Display the success message
                 this.cart = []; // Clear the cart after successful order
                 this.showCart = false;
               } else {
                 this.checkoutMessage = "Error submitting order";
+                alert("Failed to submit the order. Please try again."); // Error alert
               }
             } catch (error) {
               console.error("Error submitting order:", error);
               this.checkoutMessage = "Error submitting order";
+              alert("An unexpected error occurred. Please try again later."); // Unexpected error alert
             }
           },
 
