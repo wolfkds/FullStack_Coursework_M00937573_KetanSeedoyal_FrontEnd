@@ -63,7 +63,7 @@
           <!-- <i :class="classInfo.icon" class="icon"></i> -->
           <!-- Image of the class -->
           <img
-            :src="`http://localhost:3000${classInfo.imagePath}`"
+            :src="`https://fullstack-coursework-m00937573.onrender.com${classInfo.imagePath}`"
             :alt="classInfo.subject"
             class="lesson-image"
           />
@@ -89,7 +89,7 @@
         <div v-else>
           <div v-for="(cartItem, index) in cart" :key="index" class="card">
             <img
-              :src="`http://localhost:3000${cartItem.imagePath}`"
+              :src="`https://fullstack-coursework-m00937573.onrender.com${cartItem.imagePath}`"
               :alt="cartItem.subject"
               class="lesson-image"
             />
