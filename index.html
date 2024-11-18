@@ -56,7 +56,6 @@
           :key="index"
           class="card"
         >
-          <!-- <i :class="classInfo.icon" class="icon"></i> -->
           <!-- Image of the class -->
           <img
             :src="`https://fullstack-coursework-m00937573.onrender.com${classInfo.imagePath}`"
@@ -235,56 +234,6 @@
             }
           },
 
-          // async submitOrder() {
-          //   const order = {
-          //     name: this.name,
-          //     phone: this.phone,
-          //     lessonIDs: this.cart.map((item) => item._id),
-          //     spaces: this.cart.length,
-          //   };
-
-          //   try {
-          //     // Submit the order
-          //     const response = await fetch(
-          //       "https://fullstack-coursework-m00937573.onrender.com/orders",
-          //       {
-          //         method: "POST",
-          //         headers: { "Content-Type": "application/json" },
-          //         body: JSON.stringify(order),
-          //       }
-          //     );
-
-          //     if (response.ok) {
-          //       const result = await response.json();
-          //       alert("Order submitted successfully!");
-
-          //       // Update spaces for each lesson in the cart
-          //       for (const cartItem of this.cart) {
-          //         const updatedLesson = {
-          //           ...cartItem,
-          //           space: cartItem.space - 1, // Reduce space by 1
-          //         };
-
-          //         // Ensure only necessary fields are sent to the backend
-          //         delete updatedLessonSpace._id; // Remove `_id` if the backend auto-generates it
-          //         delete updatedLessonSpace.__v; // Remove `__v` if using Mongoose with versioning
-
-          //         await this.updateLessonSpace(cartItem._id, updatedLessonSpace); // Update lesson in the database
-          //       }
-
-          //       // Clear the cart and refresh lessons
-          //       this.cart = [];
-          //       this.showCart = false;
-          //       this.fetchLessons();
-          //     } else {
-          //       alert("Failed to submit the order. Please try again.");
-          //     }
-          //   } catch (error) {
-          //     console.error("Error submitting order:", error);
-          //     alert("An unexpected error occurred. Please try again later.");
-          //   }
-          // },
-
           // Fetch to update lesson space using PUT
           async updateLessonSpace(lessonId, newSpace) {
             try {
@@ -308,29 +257,6 @@
               console.error("Error updating lesson:", error);
             }
           },
-
-          // async updateLesson(lessonId, updatedLesson) {
-          //   try {
-          //     const response = await fetch(
-          //       `https://fullstack-coursework-m00937573.onrender.com/lessons/${lessonId}`,
-          //       {
-          //         method: "PUT",
-          //         headers: { "Content-Type": "application/json" },
-          //         body: JSON.stringify(updatedLesson), // Pass the updated lesson object
-          //       }
-          //     );
-
-          //     if (response.ok) {
-          //       const result = await response.json();
-          //       console.log("Lesson updated:", result);
-          //       this.fetchLessons(); // Re-fetch lessons to update the view
-          //     } else {
-          //       console.error("Error updating lesson:", response);
-          //     }
-          //   } catch (error) {
-          //     console.error("Error updating lesson:", error);
-          //   }
-          // },
 
           // Method to add items to the cart
           addToCart(index) {
