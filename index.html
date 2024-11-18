@@ -78,6 +78,19 @@
             >
               Add to Cart
             </button>
+
+            <!-- New Update Button -->
+              <button
+              class="update-lesson"
+              v-on:click="updateLesson(classInfo._id, {
+                subject: 'Updated Subject',
+                location: 'Updated Location',
+                price: classInfo.price + 10, // Example modification
+                space: classInfo.space - 1, // Example modification
+              })"
+            >
+              Update Lesson
+            </button>
           </div>
         </div>
       </div>
