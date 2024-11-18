@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EduClassCards</title>
-    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuev-on:2.7.8/dist/vue.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
@@ -22,14 +22,14 @@
         <input
           type="text"
           v-model="searchQuery"
-          @input="searchLessons"
+          v-on:input="searchLessons"
           placeholder="Search for classes"
           class="search-bar"
         />
 
         <button
           class="cart-button"
-          @click="handleCartToggle"
+          v-on:click="handleCartToggle"
         >
           {{ showCart ? 'Back to Lessons' : 'View Cart' }}
         </button>
@@ -74,7 +74,7 @@
             <button
               class="add-to-cart"
               :disabled="classInfo.space === 0"
-              @click="addToCart(index)"
+              v-on:click="addToCart(index)"
             >
               Add to Cart
             </button>
@@ -97,7 +97,7 @@
               <p><strong>Location:</strong> {{ cartItem.location }}</p>
               <p><strong>Price:</strong> ${{ cartItem.price }}</p>
               <p><strong>Available Spots:</strong> {{ cartItem.space }}</p>
-              <button class="add-to-cart" @click="removeFromCart(index)">
+              <button class="add-to-cart" v-on:click="removeFromCart(index)">
                 Remove from Cart
               </button>
             </div>
@@ -110,19 +110,19 @@
               v-model="name"
               class="checkout-input"
               placeholder="Your Name"
-              @input="validateCheckout"
+              v-on:input="validateCheckout"
             />
             <input
               type="text"
               v-model="phone"
               class="checkout-input"
               placeholder="Your Phone Number"
-              @input="validateCheckout"
+              v-on:input="validateCheckout"
             />
             <button
               class="checkout-button"
               :disabled="!isCheckoutValid"
-              @click="submitOrder"
+              v-on:click="submitOrder"
             >
               Checkout
             </button>
