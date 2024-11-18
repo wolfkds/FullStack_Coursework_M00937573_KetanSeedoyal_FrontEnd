@@ -226,14 +226,37 @@
           },
 
           // Fetch to update lesson space using PUT
-          async updateLessonSpace(lessonId, newSpace) {
+          // async updateLessonSpace(lessonId, newSpace) {
+          //   try {
+          //     const response = await fetch(
+          //       `https://fullstack-coursework-m00937573.onrender.com/lessons/${lessonId}`,
+          //       {
+          //         method: "PUT",
+          //         headers: { "Content-Type": "application/json" },
+          //         body: JSON.stringify({ space: newSpace }),
+          //       }
+          //     );
+
+          //     if (response.ok) {
+          //       const result = await response.json();
+          //       console.log("Lesson updated:", result);
+          //       this.fetchLessons(); // Re-fetch lessons to update the view
+          //     } else {
+          //       console.error("Error updating lesson:", response);
+          //     }
+          //   } catch (error) {
+          //     console.error("Error updating lesson:", error);
+          //   }
+          // },
+
+          async updateLesson(lessonId, updatedLesson) {
             try {
               const response = await fetch(
                 `https://fullstack-coursework-m00937573.onrender.com/lessons/${lessonId}`,
                 {
                   method: "PUT",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ space: newSpace }),
+                  body: JSON.stringify(updatedLesson), // Pass the updated lesson object
                 }
               );
 
@@ -248,6 +271,7 @@
               console.error("Error updating lesson:", error);
             }
           },
+
 
           // Method to add items to the cart
           addToCart(index) {
