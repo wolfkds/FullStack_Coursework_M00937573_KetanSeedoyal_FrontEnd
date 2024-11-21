@@ -1,6 +1,7 @@
 /* Import the Poppins font from Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
+/* Apply universal box-sizing and reset margin and padding for all elements */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,6 +9,7 @@
   font-family: "Poppins", sans-serif;
 }
 
+/* General body styling for background and fallback font */
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
@@ -23,6 +25,7 @@ body {
   padding: 10px;
 }
 
+/* Style for navigation links in the navbar */
 .navbar a {
   float: left;
   display: block;
@@ -32,9 +35,9 @@ body {
   text-decoration: none;
   font-size: 17px;
   font-weight: bold;
-  font-family: "Poppins", sans-serif;
 }
 
+/* Cart button styling for the navbar */
 .navbar .cart-button {
   float: right;
   background-color: #007bff;
@@ -59,17 +62,19 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Focus effect for the search input box */
 .search-bar:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
 }
 
+/* Container for the lesson cards with flexbox layout */
 .lessons-container {
   display: flex;
-  flex-wrap: wrap; /* Ensures cards wrap to the next line if there's no space */
-  gap: 10px; /* Adds space between cards */
-  justify-content: center; /* Distributes the cards evenly */
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
 }
 
 /* CSS for styling the class cards */
@@ -86,17 +91,14 @@ body {
   align-items: center;
 }
 
+/* Style for lesson titles */
 h3 {
   margin: 0 0 10px;
 }
 
+/* Style for paragraph text inside cards */
 p {
   margin: 5px 0;
-}
-
-.icon {
-  font-size: 30px;
-  margin-right: 20px;
 }
 
 /* Sort select box styling */
@@ -135,7 +137,7 @@ p {
 
 /* Hover effect for select boxes */
 .sort-options select:hover {
-  border-color: #007bff; /* Changes border color on hover */
+  border-color: #007bff;
 }
 
 /* Add subtle transition on hover */
@@ -157,9 +159,10 @@ p {
   width: 100%;
 }
 
+/* Styling for the add-to-cart button */
 .add-to-cart:disabled {
-  background-color: #ccc; /* Light gray background for disabled button */
-  cursor: not-allowed; /* Change cursor to not-allowed */
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* Cart page styling */
@@ -174,6 +177,7 @@ p {
   margin-top: 20px;
 }
 
+/* Styling for inputs in the checkout form */
 .checkout-input {
   margin: 10px 0;
   padding: 10px;
@@ -183,6 +187,7 @@ p {
   border-radius: 5px;
 }
 
+/* Styling for the checkout button */
 .checkout-button {
   background-color: #28a745;
   color: white;
@@ -195,11 +200,13 @@ p {
   width: 100%;
 }
 
+/* Disabled state styling for the checkout button */
 .checkout-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
+/* Styling for lesson images inside cards */
 .lesson-image {
   width: 25%;
   height: auto;
