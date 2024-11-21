@@ -6,17 +6,13 @@
     <title>EduClassCards</title>
     <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
     <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
   </head>
 
   <body>
     <div id="app">
       <!-- Navigation Bar -->
-
       <div class="navbar">
+        <!-- Website Title -->
         <a href="">EDUCLASSCARDS</a>
         <!-- Search Bar -->
         <input
@@ -26,12 +22,13 @@
           placeholder="Search for classes"
           class="search-bar"
         />
-
+        <!-- Cart Toggle Button -->
         <button class="cart-button" v-on:click="handleCartToggle">
           {{ showCart ? 'Back to Lessons' : 'View Cart' }}
         </button>
       </div>
 
+      <!-- Lessons View -->
       <div v-if="!showCart" class="lessons-container">
         <!-- Sort Options -->
         <div class="sort-options">
@@ -63,10 +60,12 @@
             class="lesson-image"
           />
           <div>
+            <!-- Class Details -->
             <h3>{{ classInfo.subject }}</h3>
             <p><strong>Location:</strong> {{ classInfo.location }}</p>
             <p><strong>Price:</strong> ${{ classInfo.price }}</p>
             <p><strong>Available Spots:</strong> {{ classInfo.space }}</p>
+            <!-- Add to Cart Button -->
             <button
               class="add-to-cart"
               :disabled="classInfo.space === 0"
@@ -78,21 +77,27 @@
         </div>
       </div>
 
+      <!-- Shopping Cart View -->
       <div v-else class="cart-page">
         <h2>Your Shopping Cart</h2>
+        <!-- Empty Cart Message -->
         <div v-if="cart.length === 0">Your cart is empty.</div>
         <div v-else>
+          <!-- List of Cart Items -->
           <div v-for="(cartItem, index) in cart" :key="index" class="card">
+            <!-- Cart Item Image -->
             <img
               :src="`https://fullstack-coursework-m00937573.onrender.com${cartItem.imagePath}`"
               :alt="cartItem.subject"
               class="lesson-image"
             />
             <div>
+              <!-- Cart Item Details -->
               <h3>{{ cartItem.subject }}</h3>
               <p><strong>Location:</strong> {{ cartItem.location }}</p>
               <p><strong>Price:</strong> ${{ cartItem.price }}</p>
               <p><strong>Available Spots:</strong> {{ cartItem.space }}</p>
+              <!-- Remove from Cart Button -->
               <button class="add-to-cart" v-on:click="removeFromCart(index)">
                 Remove from Cart
               </button>
@@ -101,6 +106,7 @@
 
           <!-- Checkout Form -->
           <div class="checkout-form">
+            <!-- Name Input -->
             <input
               type="text"
               v-model="name"
@@ -108,6 +114,7 @@
               placeholder="Your Name"
               v-on:input="validateCheckout"
             />
+            <!-- Phone Number Input -->
             <input
               type="text"
               v-model="phone"
@@ -115,6 +122,7 @@
               placeholder="Your Phone Number"
               v-on:input="validateCheckout"
             />
+            <!-- Checkout Button -->
             <button
               class="checkout-button"
               :disabled="!isCheckoutValid"
@@ -154,6 +162,7 @@
             return this.lessons.sort((a, b) => {
               let comparison = 0;
 
+              // Compare as strings or numbers based on attribute type
               if (typeof a[this.sortAttribute] === "string") {
                 comparison = a[this.sortAttribute].localeCompare(
                   b[this.sortAttribute]
@@ -162,6 +171,7 @@
                 comparison = a[this.sortAttribute] - b[this.sortAttribute];
               }
 
+              // Adjust for descending order
               return this.sortOrder === "desc" ? comparison * -1 : comparison;
             });
           },
@@ -191,6 +201,7 @@
 
           // Fetch to save a new order using POST
           async submitOrder() {
+            // Prepare order data
             const order = {
               name: this.name,
               phone: this.phone,
@@ -284,6 +295,7 @@
               this.name.trim() !== "" && this.phone.trim() !== "";
           },
 
+          // Handle cart toggle
           handleCartToggle() {
             if (this.cart.length === 0) {
               alert("Your cart is empty!"); // Alert for an empty cart
@@ -297,6 +309,7 @@
             this.showCart = !this.showCart;
           },
 
+          // Perform search based on query
           async searchLessons() {
             if (!this.searchQuery.trim()) {
               try {
