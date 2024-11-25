@@ -226,10 +226,7 @@
 
                 // Update the space for each lesson in the cart
                 for (const cartItem of this.cart) {
-                  await this.updateLessonSpace(
-                    cartItem._id,
-                    cartItem.space
-                  );
+                  await this.updateLessonSpace(cartItem._id, cartItem.space);
                 }
 
                 this.cart = []; // Clear the cart after successful order
@@ -291,8 +288,27 @@
 
           // Validate checkout form
           validateCheckout() {
+            // Regex for validation
+            const nameRegex = /^[a-zA-Z\s]+$/; // Allows letters and spaces only
+            const phoneRegex = /^[0-9]+$/; // Allows numbers only
+
+            // Validate name and phone using regex
+            const isNameValid = nameRegex.test(this.name.trim());
+            const isPhoneValid = phoneRegex.test(this.phone.trim());
+
+            // Check if both fields are valid
             this.isCheckoutValid =
-              this.name.trim() !== "" && this.phone.trim() !== "";
+              isNameValid &&
+              isPhoneValid &&
+              this.name.trim() !== "" &&
+              this.phone.trim() !== "";
+
+            if (!isNameValid) {
+              alert("Name should only contain letters and spaces.");
+            }
+            if (!isPhoneValid) {
+              alert("Phone number should only contain digits.");
+            }
           },
 
           // Handle cart toggle
